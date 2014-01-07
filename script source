@@ -1,0 +1,71 @@
+#GPGGA nmea strings parsing scrtipt
+	#Author - Tinsaeberhan Kassa
+import pynmea2
+import sys, getopt
+
+sentence = " "
+Nfile = " "
+
+def main(argv):
+
+	try:
+		opts, args = getopt.getopt(argv, "s:f:", [])
+
+	except getopt.GetoptError :
+		print "usage -s <sentence> | -f <file of nmea sentences>"
+		sys.exit(2)
+
+	for opt, arg in opts:
+
+		if opt == "-s" :
+			sentence = "$GPGGA"
+			sentence += str(arg)
+			#print sentence
+			sentence_parse(sentence)
+			break
+			
+			
+		elif opt == "-f" :
+			Nfile = arg
+			#print Nfile
+			file_parse(Nfile)
+			break
+
+		else:
+			print "usage -s <sentence> | -f <file of nmea sentences>"
+	
+
+	
+	
+def sentence_parse(Psentence):
+	result = pynmea2.parse(Psentence)
+	print "\n"
+	print "Time: " + str(result.timestamp)
+	print "Latitude " + str(result.latitude) + " "+ result.lat_dir
+	print "Longitude " + str(result.longitude) + " " + result.lon_dir
+	print "Quality " + result.gps_qual
+	print "Number of satellites " + result.num_sats 
+	print "Horizontal_dilution of precision " + result.horizontal_dil
+	print "Altitude " + str(result.altitude) + " " + result.altitude_units
+	print "Heigth of geoid above WGS84 ellipsoid " + str(result.geo_sep) + " " + result.geo_sep_units
+	print "Time since last DGPS update " + result.age_gps_data
+	print "DGPS reference of station id " + result.ref_station_id
+	#print result.checksum
+	
+
+
+
+def file_parse(Pfile):
+	stream_reader = pynmea2.NMEAStreamReader()
+
+	fObj = open(Pfile,"r")
+	data = fObj.read()
+
+	for string in stream_reader.next(data):
+		#print string
+		sentence_parse(str(string))
+
+	
+
+if __name__ == '__main__':
+	main(sys.argv[1:])
