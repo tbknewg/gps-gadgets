@@ -7,3 +7,8 @@ usage
 
 python gps.py -s "NMEA string" or
 python gps.py -f "file name"
+
+note : you can install the pynmea2 library online for linux
+
+sudo apt-get install pip
+pip install pynmea2
