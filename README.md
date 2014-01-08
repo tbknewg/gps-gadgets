@@ -8,6 +8,8 @@ usage
 python gps.py -s "NMEA string" or
 python gps.py -f "file name"
 
+gps.py is the script name. so download the source and save it as gps.py or give it your preferred name, and use that name when you run the script
+
 note : you can install the pynmea2 library online for linux
 
 sudo apt-get install pip
